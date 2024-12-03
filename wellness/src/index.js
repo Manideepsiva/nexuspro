@@ -51,7 +51,9 @@ import Clientshowrates from './components/client-showrates';
 import Appointmentclient from './components/Appointment-client';
 import Appointmentpayment from './components/Appointment-payment';
 import Clientsearchorgans from './components/client-seachbyorgans';
-
+import emailvalidator from 'validator'
+import ForgotPassword from './components/forgotpassword';
+import ResetPassword from './components/newforgotpassword';
 
 
 
@@ -123,9 +125,8 @@ const router = createBrowserRouter([{
     const username = formdata.get("username");
     const age = formdata.get("age");
     
-    // Email validation (simple)
-    const emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
-    if (!emailRegex.test(usermail)) {
+    
+    if (!emailvalidator.isEmail(usermail)) {
       return redirect('/register?message=Invalid%20email%20format');
     }
 
@@ -211,6 +212,18 @@ action : async({request})=>{
 
 }
 },
+{
+   path:'/forgotpass',
+   element:<ForgotPassword/>
+
+
+},
+{
+  path:'/resetpassword',
+  element:<ResetPassword/>
+
+},
+
 
 
 {

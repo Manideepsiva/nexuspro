@@ -21,6 +21,8 @@ const moment = require('moment');
 const Admin = require("./schemas/adminSchema");
 const GridFsStorage = require('multer-gridfs-storage').GridFsStorage;
 const HospitalRequest = require("./schemas/Hospitalrequestschema");
+const TemporaryUser = require("./schemas/TemporarySchema"); 
+const nodemailer = require("nodemailer");
 let typestest;
 
 
@@ -28,6 +30,27 @@ let typestest;
 var app = express();
 app.use(cors());    
 app.use(express.json());
+
+async function sendVerificationEmail(usermail,verificationLink) {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "msiva0100@gmail.com",
+      pass: "smfz ennz kbyu hzkh",
+    },
+  });
+
+  const mailOptions = {
+    from:"msiva0100@gmail.com" ,
+    to: usermail,
+    subject: "Verify Your Email",
+    html: `<p>Click the link below to verify your email:</p>
+    <a href="${verificationLink}">${verificationLink}</a>`,
+  };
+
+  await transporter.sendMail(mailOptions);
+
+}
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -88,19 +111,132 @@ app.post('/api/register',async(req,res)=>{
     const finduser = await user.findOne({usermail:usermail});
     if(finduser) res.status(400).send("user already exist with given mail address");
     else{
+          // Save user temporarily
+    const tempUser = new TemporaryUser({
+      usermail,
+      password,
+      username,
+      age,
+    });
+    await tempUser.save();
+    // Generate a verification token
+    const verificationToken = jwt.sign({ usermail },SECRET_KEY, {
+      expiresIn: "1h", // Token valid for 1 hour
+    });
 
+    const verificationLink = `http://localhost:3001/verify-email?token=${verificationToken}`;
+    await sendVerificationEmail(usermail, verificationLink);
+    res.status(200).json({ message: "Verification email sent" });
 
-
-    newuser.save().then(()=>{console.log("user is succesfullly created");
-        res.status(200).send("user created successfully ");
-
-    }).catch(err=>{
-        res.status(500).send("error in creating user");
-    })
+   
 }
  
 
 })
+
+
+app.post("/api/forgot-password", async (req, res) => {
+  const { usermail } = req.body;
+
+  try {
+    const userd = await user.findOne({ usermail });
+    if (!userd) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Generate Reset Token
+    const token = jwt.sign({ id: userd._id }, SECRET_KEY, {
+      expiresIn: "15m", // Token valid for 15 minutes
+    });
+
+    // Create Reset Link
+    const resetLink = `http://localhost:3002/resetpassword?token=${token}`;
+
+  
+
+    await sendVerificationEmail(usermail,resetLink);
+
+    res.status(200).json({ message: "Password reset email sent successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred." });
+  }
+});
+
+
+
+// Reset Password Route
+app.post("/api/reset-password", async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    // Verify Token
+    const decoded = jwt.verify(token,SECRET_KEY);
+    const userId = decoded.id;
+
+    // Find User
+    const userd = await user.findById(userId);
+    if (!userd) {
+      return res.status(404).json({ message: "Invalid or expired token." });
+    }
+
+ 
+
+    // Update Password
+    userd.password = newPassword;
+    await userd.save();
+
+    res.status(200).json({ message: "Password reset successful." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Invalid or expired token." });
+  }
+});
+
+
+
+
+app.get("/verify-email", async (req, res) => {
+  const { token } = req.query;
+
+  if (!token) {
+    return res.status(400).json({ message: "Invalid or missing token" });
+  }
+
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token,SECRET_KEY);
+    const { usermail } = decoded;
+
+    // Find the user in the temporary collection
+    const tempUser = await TemporaryUser.findOne({ usermail });
+    if (!tempUser) {
+      return res.status(404).json({ message: "User not found or already verified" });
+    }
+
+    // Save user permanently
+    const newUser = new user({
+      usermail: tempUser.usermail,
+      password: tempUser.password,
+      username: tempUser.username,
+      age: tempUser.age,
+    });
+    await newUser.save();
+
+    // Remove temporary user
+    await TemporaryUser.deleteOne({ usermail });
+
+    res.status(200).json({ message: "Email verified successfully. Registration complete." });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Invalid or expired token" });
+  }
+});
+
+
+
+
+
 
 app.post('/api/adminlogin',async(req,res)=>{
     const {usermail,password} = req.body;
@@ -725,6 +861,14 @@ else{
     res.json(names)
 
 
+  });
+
+
+  app.get("/api/getprofile/:id",async(req,res)=>{
+    const id = req.params.id;
+    const finduse = await user.findById(id).select("-password");
+    if (!finduse) return res.status(404).json({ message: "User not found" });
+    res.json(finduse);
   })
 
 
@@ -1039,6 +1183,29 @@ app.get("/api/admingetusers",async (req,res)=>{
       } catch (error) {
         res.status(500).json({ message: 'Server error' });
       }
+})
+
+app.post("/api/changepassword/:id",async(req,res)=>{
+  const id = req.params.id;
+  const {oldpassword,newpassword} = req.body;
+  const userdins = await user.findById(id);
+  const pass = userdins.password;
+  const result = await bcrypt.compare(oldpassword,pass);
+  if(result){
+    const salt = await bcrypt.genSalt(10);
+    userdins.password = newpassword
+
+    
+    await userdins.save();
+    return res.sendStatus(200);
+  }
+  else{
+   return  res.status(500).json({ message: "invalid password" });
+
+  }
+  return  res.status(500).json({ message: "invalid password" });
+
+
 })
   
 app.post("/api/admindeleteuser/:id",async(req,res)=>{

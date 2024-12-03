@@ -3,30 +3,97 @@ import clientstyle from "../assets/css/style.module.css"
 import { Link } from "react-router-dom";
 import images from "./importimag";
 import { useState } from "react";
-
+import { useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function ProfileCard() {
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+  const [errormsg,setErrormsg] =  useState('');
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const passwordRegex = /^[a-zA-Z0-9]{8,}$/;
+    if (!passwordRegex.test(newPassword) || /\s/.test(newPassword)) {
+      setErrormsg("invalid password format")
+    }
+   else{
+    const token = localStorage.getItem('token');
+        
+    const decoded = jwtDecode(token);
+    const userid = decoded.id;
+    const response = await fetch(`http://localhost:3001/api/changepassword/${userid}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Include JWT token
+      },
+      body: JSON.stringify({
+        oldpassword:oldPassword,
+        newpassword:newPassword,
+      }),
+    });
 
-    // Add your password update API logic here
-    console.log("Old Password:", oldPassword);
-    console.log("New Password:", newPassword);
+   
 
-    alert("Password update request sent.");
+    if(response.ok){
+      console.log("this is good")
+      setErrormsg("");
+      setOldPassword(""); // Clear fields
+      setNewPassword("");
+      return navigate("/logout");
+
+    }
+
+    else{
+      console.log("this is good 2")
+
+      setErrormsg("incorrect old password");
+    }
+   }
   };
+
+  useEffect(() => {
+   
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        const decoded = jwtDecode(token);
+        const userid = decoded.id;
+        const response = await fetch(`http://localhost:3001/api/getprofile/${userid}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile details");
+        }
+        const data = await response.json();
+        console.log(data)
+        setProfile(data); // Set the profile data in state
+      } catch (err) {
+       console.log("some error")
+      } 
+    };
+
+    fetchProfile();
+  }, []); // Empty dependency array means it runs once when the component mounts
+
+
 
   return (
     <div className={clientstyle["profile-card"]}>
       <h3>Your Profile :</h3>
       <p>
-        <strong>Name:</strong> John Doe
+        <strong>Name:</strong> {profile?.username}
       </p>
       <p>
-        <strong>Age:</strong> 30
+        <strong>Age:</strong> {profile?.age}
       </p>
       <form onSubmit={handleSubmit}>
         <div>
@@ -50,6 +117,7 @@ function ProfileCard() {
           />
         </div>
         <button type="submit">Update Password</button>
+        <div>{errormsg}</div>
       </form>
     </div>
   );
@@ -63,6 +131,9 @@ function Clientnav(){
   const toggleProfile = () => {
     setIsProfileVisible((prev) => !prev);
   };
+
+
+
     return (
         <>
 
