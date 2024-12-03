@@ -5,7 +5,6 @@ import rootReducer from "./rootreducer" // Combines all reducers
 import { combineReducers } from 'redux';
 import {thunk} from 'redux-thunk';
 
-
 const persistConfig = {
   key: 'root',
   storage,
