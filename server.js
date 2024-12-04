@@ -586,7 +586,8 @@ app.post("/api/clientupcomingappointments",async(req,res)=>{
             testname: appointment.testname, // Assuming this field exists in your Appointment schema
             nameOfHospital: hospitalMap[appointment.hospitalid]?.nameOfHospital || null,
             address: hospitalMap[appointment.hospitalid]?.address || null,
-            slot:appointment.timeSlot
+            slot:appointment.timeSlot,
+            id:appointment._id
         }));
 
         // Send the formatted result as a response

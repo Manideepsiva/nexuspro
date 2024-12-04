@@ -60,10 +60,10 @@ function ClientAppointmentDashtoday() {
             <nav className={appdashstyle.appnavbar}>
                 <ul>
                 <li  id="upcomingapp">
-                        <a href="#" style={{ fontSize: "1.5rem" }}><Link to = "/authpage/appointmentsdashboard/upcoming"><pre>Upcoming Appointments</pre></Link></a>
+                        <a href="#" style={{ fontSize: "1.5rem" }}><Link to = "/authpage/appointmentsdashboard/upcoming"><pre style={{ fontSize: "1.3rem" }}>Upcoming Appointments</pre></Link></a>
                     </li>
-                    <li><a href="#" style={{ fontSize: "1.5rem" }} id="completedapp"><Link to = "/authpage/appointmentsdashboard/completed" ><pre>Completed Appointments</pre></Link></a></li>
-                    <li className={appdashstyle['active-bar']} ><a href="#" style={{ fontSize: "1.5rem" }} id="todayapp"><Link to = "/authpage/appointmentsdashboard/today"><pre>Today Appointments</pre></Link></a></li>
+                    <li><a href="#" style={{ fontSize: "1.5rem" }} id="completedapp"><Link to = "/authpage/appointmentsdashboard/completed" ><pre style={{ fontSize: "1.3rem" }}>Completed Appointments</pre></Link></a></li>
+                    <li className={appdashstyle['active-bar']} ><a href="#" style={{ fontSize: "1.5rem" }} id="todayapp"><Link to = "/authpage/appointmentsdashboard/today"><pre style={{ fontSize: "1.3rem" }}>Today Appointments</pre></Link></a></li>
                     
                 </ul>
             </nav>

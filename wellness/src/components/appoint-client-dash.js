@@ -72,10 +72,10 @@ function ClientAppointmentDash() {
             <nav className={appdashstyle.appnavbar}>
                 <ul>
                     <li className={appdashstyle['active-bar']} id="upcomingapp">
-                        <a href="#" style={{ fontSize: "1.5rem" }}><Link to = "/authpage/appointmentsdashboard/upcoming"><pre>Upcoming Appointments</pre></Link></a>
+                        <a href="#" style={{ fontSize: "2rem" }}><Link to = "/authpage/appointmentsdashboard/upcoming"><pre style={{ fontSize: "1.3rem" }}>Upcoming Appointments</pre></Link></a>
                     </li>
-                    <li><a href="#" style={{ fontSize: "1.5rem" }} id="completedapp"><Link to = "/authpage/appointmentsdashboard/completed" ><pre>Completed Appointments</pre></Link></a></li>
-                    <li><a href="#" style={{ fontSize: "1.5rem" }} id="todayapp"><Link to = "/authpage/appointmentsdashboard/today"><pre>Today Appointments</pre></Link></a></li>
+                    <li><a href="#" style={{ fontSize: "1.5rem" }} id="completedapp"><Link to = "/authpage/appointmentsdashboard/completed" ><pre style={{ fontSize: "1.3rem" }}>Completed Appointments</pre></Link></a></li>
+                    <li><a href="#" style={{ fontSize: "1.5rem" }} id="todayapp"><Link to = "/authpage/appointmentsdashboard/today"><pre style={{ fontSize: "1.3rem" }}>Today Appointments</pre></Link></a></li>
                     
                 </ul>
             </nav>
@@ -135,12 +135,12 @@ function ClientAppointmentDash() {
                                             }}
                                         >
                                             <div className={appdashstyle['show-cont']}>
-                                                <p><pre>Test name         : hello</pre></p>
+                                                <p><pre>Test name         : {appointment.testname}</pre></p>
                                                 <p><pre>Booked date       : {new Date(appointment.bookedDate).toDateString()}</pre></p>
                                                 <p><pre>Appointment date  : {appointment.date.toDateString()}</pre></p>
                                                 <div className={appdashstyle['show-cont-but']}>
                                                    
-                                                    <button>Request Cancellation</button>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
