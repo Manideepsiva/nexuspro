@@ -158,8 +158,11 @@ function Login() {
               style={styles.input}
             />
           </div>
-
+           <div style={{display:"flex",justifyContent:"space-between"}}>
           <div style={{color:"black",cursor:"pointer"}}><Link to={"/forgotpass"}>Forgot password?</Link></div>
+          <div style={{color:"black",cursor:"pointer"}}><Link to={"/register"}>new user?</Link></div>
+
+          </div>
 
           <button
             type="submit"

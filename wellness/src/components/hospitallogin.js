@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, useLocation } from 'react-router-dom';
 import Showerror from './showerror';
+import { Link } from 'react-router-dom';
 
 function Hospitallogin() {
   const [credentials, setCredentials] = useState({
@@ -108,7 +109,7 @@ function Hospitallogin() {
       <div style={styles.background}></div>
       <div style={styles.overlay}></div>
       <div style={styles.formContainer}>
-        <h2 style={styles.heading}>Admin Portal</h2>
+        <h2 style={styles.heading}>Hospital Login</h2>
         <Form method="post" action="/hospitallogin">
           <div>
             <label htmlFor="loginId" style={styles.label}>
@@ -139,6 +140,7 @@ function Hospitallogin() {
               style={styles.input}
             />
           </div>
+          <div style={{color:"black",cursor:"pointer"}}><Link to={"/hospitalregistration"}>new user?</Link></div>
 
           <button
             type="submit"

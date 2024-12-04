@@ -185,6 +185,7 @@ function Register() {
               style={styles.input}
             />
           </div>
+          <Showerror message={message} />
 
           <button
             type="submit"
@@ -200,9 +201,9 @@ function Register() {
           >
             Register
           </button>
-          <Showerror message={message} />
+        
         </Form>
-        <p>Note:After clicking Register please check mail to verify</p>
+        <p>Note:After clicking Register please check your mail to verify </p>
       </div>
     </div>
   );

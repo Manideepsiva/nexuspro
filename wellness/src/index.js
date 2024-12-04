@@ -54,6 +54,7 @@ import Clientsearchorgans from './components/client-seachbyorgans';
 import emailvalidator from 'validator'
 import ForgotPassword from './components/forgotpassword';
 import ResetPassword from './components/newforgotpassword';
+import WelcomePage from './components/landingpage';
 
 
 
@@ -106,7 +107,7 @@ const router = createBrowserRouter([{
     }
     return null; // User is not authenticated, allow them to stay on the login page
   },
-  element:<Hoempage/>,
+  element:<WelcomePage/>,
  
   
 },
@@ -269,38 +270,58 @@ action : async({request})=>{
     element:<HospitalForm/>,
     action:async ({ request }) =>{
       const formData = await request.formData();
-      const hospitalName = formData.get('hospitalName');
-      const phone = formData.get('phone');
-      const email = formData.get('email');
-      const address = formData.get('address');
-      const state = formData.get('state');
-      const district = formData.get('district');
-    
-      const data = new FormData();
-      data.append('hospitalName', hospitalName);
-      data.append('phone', phone);
-      data.append('email', email);
-      data.append('address', address);
-      data.append('state', state);
-      data.append('district', district);
-    
-      for (let i = 1; i <= 4; i++) {
-        const doc = formData.get(`document${i}`);
-        if (doc) {
-          data.append(`document${i}`, doc);
-        }
-      }
-    
-      const response = await fetch('http://localhost:3001/api/hospitalregistration', {
-        method: 'POST',
-        body: data,
-      });
-    
-      if (response.ok) {
-        return redirect('/'); // Redirect after successful submission
-      } else {
-        return redirect('/hospitalregistration?message=Submission%20failed');
-      }
+
+  const hospitalName = formData.get('hospitalName');
+  const phone = formData.get('phone');
+  const email = formData.get('email');
+  const address = formData.get('address');
+  const state = formData.get('state');
+  const district = formData.get('district');
+
+  // Validation logic
+  const phoneRegex = /^[6-9]\d{9}$/; // Indian phone number format
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // General email format
+  const hospitalNameRegex = /^[a-zA-Z0-9\s]+$/; // Alphanumeric (letters, numbers, and spaces)
+
+  if (!hospitalName || !hospitalNameRegex.test(hospitalName)) {
+    return redirect('/hospitalregistration?message=Invalid%20hospital%20name');
+  }
+
+  if (!phone || !phoneRegex.test(phone)) {
+    return redirect('/hospitalregistration?message=Invalid%20phone%20number');
+  }
+
+  if (!email || !emailRegex.test(email)) {
+    return redirect('/hospitalregistration?message=Invalid%20email%20address');
+  }
+
+  // If validation passes, prepare the data for submission
+  const data = new FormData();
+  data.append('hospitalName', hospitalName);
+  data.append('phone', phone);
+  data.append('email', email);
+  data.append('address', address);
+  data.append('state', state);
+  data.append('district', district);
+
+  for (let i = 1; i <= 4; i++) {
+    const doc = formData.get(`document${i}`);
+    if (doc) {
+      data.append(`document${i}`, doc);
+    }
+  }
+
+  // Submit data
+  const response = await fetch('http://localhost:3001/api/hospitalregistration', {
+    method: 'POST',
+    body: data,
+  });
+
+  if (response.ok) {
+    return redirect('/'); // Redirect after successful submission
+  } else {
+    return redirect('/hospitalregistration?message=Submission%20failed');
+  }
     }
 
   },

@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import { Form } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Showerror from "./showerror";
 
 const HospitalForm = () => {
   const [state, setState] = useState("");
   const [districts, setDistricts] = useState([]);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const message = queryParams.get('message') || '';
 
   const handleStateChange = (event) => {
     const selectedState = event.target.value;
@@ -92,7 +98,7 @@ const HospitalForm = () => {
         <h2 style={{ textAlign: "center", color: "#333" }}>
           Hospital Registration
         </h2>
-        <form method="post" encType="multipart/form-data"  >
+        <Form method="post" encType="multipart/form-data" action="/hospitalregistration" >
           {/* Form Fields */}
           <div style={{display:"flex",justifyContent:"space-between"}}>
           <div style={{width:"250px"}}>
@@ -115,7 +121,7 @@ const HospitalForm = () => {
           <div>
             <label htmlFor="phone">Phone:</label>
             <input
-              type="tel"
+              type="number"
               name="phone"
               required
               style={{
@@ -296,7 +302,8 @@ const HospitalForm = () => {
             Submit
           </button>
      
-        </form>
+        </Form>
+        <Showerror message={message} />
 
       
       </div>

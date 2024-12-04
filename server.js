@@ -98,6 +98,9 @@ const authroute = (req,res,next)=>{
 
 
 app.post('/api/register',async(req,res)=>{
+ 
+  try{
+
     const {usermail,password,username,age} = req.body;
     const newuser = new user({
         usermail,
@@ -129,6 +132,8 @@ app.post('/api/register',async(req,res)=>{
     res.status(200).json({ message: "Verification email sent" });
 
    
+}} catch (error){
+  res.status(500).json({message:"error occured"})
 }
  
 
@@ -1341,15 +1346,16 @@ app.post("/api/hospitalregistration", upload.fields([
     try {
         // Create a new hospital document with default password
         const newHospital = new hospmodel({
-            State:state,
-            District:district,
+            State:state.toUpperCase(),
+            District:district.toUpperCase(),
            
            
             mitraContactNumber:phone,
             nameOfHospital:hospitalName,
             Address:address,
             email:email,
-            password: '12345678', // Setting the default password
+            password: '12345678',
+            tests:[] // Setting the default password
         });
 
         // Save the hospital document
