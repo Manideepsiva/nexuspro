@@ -128,7 +128,7 @@ function Register() {
         <Form method="post" action="/register">
           <div>
             <label htmlFor="loginId" style={styles.label}>
-              Login ID
+              Mail Id
             </label>
             <input
               type="text"
@@ -202,6 +202,7 @@ function Register() {
           </button>
           <Showerror message={message} />
         </Form>
+        <p>Note:After clicking Register please check mail to verify</p>
       </div>
     </div>
   );

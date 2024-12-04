@@ -72,24 +72,30 @@ const HospitalForm = () => {
         backgroundAttachment: "fixed", // Keeps the background constant
         backgroundPosition: "center",
         minHeight: "100vh",
+        position:"fixed",
+        top:"0",
+        left:"0",
+        width:"100vw"
       }}
     >
       <div
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.8)",
           padding: "40px",
-          width: "400px",
+          width: "700px",
           borderRadius: "10px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          margin: "50px auto", // Center the form
+          margin: "20px auto", // Center the form
           overflowY: "auto", // Add scroll functionality to the form
         }}
       >
         <h2 style={{ textAlign: "center", color: "#333" }}>
           Hospital Registration
         </h2>
-        <form method="post" encType="multipart/form-data">
+        <form method="post" encType="multipart/form-data"  >
           {/* Form Fields */}
+          <div style={{display:"flex",justifyContent:"space-between"}}>
+          <div style={{width:"250px"}}>
           <div>
             <label htmlFor="hospitalName">Hospital Name:</label>
             <input
@@ -98,7 +104,7 @@ const HospitalForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "10px",
+                padding: "2px",
                 marginBottom: "15px",
                 fontSize: "16px",
                 borderRadius: "5px",
@@ -114,7 +120,7 @@ const HospitalForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "10px",
+                padding: "2px",
                 marginBottom: "15px",
                 fontSize: "16px",
                 borderRadius: "5px",
@@ -130,7 +136,7 @@ const HospitalForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "10px",
+                padding: "2px",
                 marginBottom: "15px",
                 fontSize: "16px",
                 borderRadius: "5px",
@@ -146,7 +152,7 @@ const HospitalForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "10px",
+                padding: "2px",
                 marginBottom: "15px",
                 fontSize: "16px",
                 borderRadius: "5px",
@@ -162,7 +168,7 @@ const HospitalForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "10px",
+                padding: "2px",
                 marginBottom: "15px",
                 fontSize: "16px",
                 borderRadius: "5px",
@@ -183,7 +189,7 @@ const HospitalForm = () => {
               required
               style={{
                 width: "100%",
-                padding: "10px",
+                padding: "2px",
                 marginBottom: "15px",
                 fontSize: "16px",
                 borderRadius: "5px",
@@ -198,6 +204,8 @@ const HospitalForm = () => {
               ))}
             </select>
           </div>
+          </div>
+          <div>
           <div>
             <label htmlFor="document1">
               Upload Business License Document:
@@ -268,22 +276,29 @@ const HospitalForm = () => {
               }}
             />
           </div>
+          </div>
+          </div>
+
           <button
             type="submit"
             style={{
               width: "100%",
-              padding: "10px",
+              padding: "2px",
               backgroundColor: "#007BFF",
               color: "#fff",
               border: "none",
               borderRadius: "5px",
               cursor: "pointer",
               fontSize: "18px",
+
             }}
           >
             Submit
           </button>
+     
         </form>
+
+      
       </div>
     </div>
   );

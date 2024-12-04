@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Form, useLocation } from 'react-router-dom';
+import { Form, Link, useLocation } from 'react-router-dom';
 import Showerror from './showerror';
+
 function Login() {
   const [credentials, setCredentials] = useState({
     loginId: '',
@@ -157,6 +158,8 @@ function Login() {
               style={styles.input}
             />
           </div>
+
+          <div style={{color:"black",cursor:"pointer"}}><Link to={"/forgotpass"}>Forgot password?</Link></div>
 
           <button
             type="submit"

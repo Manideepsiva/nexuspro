@@ -57,6 +57,7 @@ import ResetPassword from './components/newforgotpassword';
 
 
 
+
 const logout = ()=>{
   localStorage.removeItem('token');
   return redirect("/login");
