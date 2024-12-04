@@ -20,35 +20,98 @@ function Hospitallogin() {
     }));
   };
 
+  // Inline CSS styles
+  const styles = {
+    page: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      width: '100%',
+      overflow: 'hidden'
+    },
+    background: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundImage: 'url("https://img.freepik.com/free-photo/close-up-doctor-with-copy-space_23-2148814244.jpg")', // Replace with your image URL
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      zIndex: -1,
+      filter: 'blur(2px)'
+    },
+    overlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      zIndex: -1
+    },
+    formContainer: {
+      width: '400px',
+      padding: '20px',
+      borderRadius: '12px',
+      boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      position: 'absolute',
+      right: '12%',
+      transform: 'translateY(-50%)',
+      top: '50%',
+      zIndex: 1,
+      fontFamily: '"Arial", sans-serif'
+    },
+    heading: {
+      textAlign: 'center',
+      marginBottom: '20px',
+      color: '#333',
+      fontFamily: '"Verdana", sans-serif'
+    },
+    label: {
+      display: 'block',
+      marginBottom: '8px',
+      fontSize: '14px',
+      color: '#555'
+    },
+    input: {
+      width: '100%',
+      padding: '10px',
+      marginBottom: '15px',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      fontSize: '14px'
+    },
+    button: {
+      width: '100%',
+      padding: '10px',
+      backgroundColor: '#2a9d8f', // Prismarine color
+      color: '#fff',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontSize: '16px',
+      transition: 'all 0.3s ease',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+    },
+    buttonHover: {
+      backgroundColor: '#127776', // Darker shade of Prismarine
+      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)'
+    }
+  };
+
   return (
-    <div
-      style={{
-        backgroundImage: 'url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCydjMrC682-bne_-yyrYkTCdxl0sEISxHxQ&s")', // Add your image URL here
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'flex-start', // Align the container to the left
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.8)', // Light background for form container
-          padding: '40px',
-          width: '400px',
-          borderRadius: '10px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          position: 'absolute',
-          top: '50%',
-          left: '50%', // Position it on the left side
-          transform: 'translateY(-50%)',
-        }}
-      >
-        <h2 style={{ textAlign: 'center', color: '#333' }}>Admin Portal</h2>
+    <div style={styles.page}>
+      <div style={styles.background}></div>
+      <div style={styles.overlay}></div>
+      <div style={styles.formContainer}>
+        <h2 style={styles.heading}>Admin Portal</h2>
         <Form method="post" action="/hospitallogin">
           <div>
-            <label htmlFor="loginId" style={{ display: 'block', marginBottom: '8px' }}>
+            <label htmlFor="loginId" style={styles.label}>
               Login ID
             </label>
             <input
@@ -58,19 +121,12 @@ function Hospitallogin() {
               value={credentials.loginId}
               onChange={handleChange}
               required
-              style={{
-                width: '100%',
-                padding: '10px',
-                marginBottom: '15px',
-                fontSize: '16px',
-                borderRadius: '5px',
-                border: '1px solid #ddd',
-              }}
+              style={styles.input}
             />
           </div>
 
           <div>
-            <label htmlFor="password" style={{ display: 'block', marginBottom: '8px' }}>
+            <label htmlFor="password" style={styles.label}>
               Password
             </label>
             <input
@@ -80,28 +136,20 @@ function Hospitallogin() {
               value={credentials.password}
               onChange={handleChange}
               required
-              style={{
-                width: '100%',
-                padding: '10px',
-                marginBottom: '15px',
-                fontSize: '16px',
-                borderRadius: '5px',
-                border: '1px solid #ddd',
-              }}
+              style={styles.input}
             />
           </div>
 
           <button
             type="submit"
-            style={{
-              width: '100%',
-              padding: '10px',
-              backgroundColor: '#007BFF',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '18px',
+            style={styles.button}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = styles.buttonHover.backgroundColor;
+              e.target.style.boxShadow = styles.buttonHover.boxShadow;
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = styles.button.backgroundColor;
+              e.target.style.boxShadow = styles.button.boxShadow;
             }}
           >
             Login
