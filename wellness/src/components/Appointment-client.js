@@ -49,7 +49,7 @@ function Appointmentclient(){
           <input type="email" id="email" name="email" placeholder="Enter Patient Email" required />
 
           <label htmlFor="phone">Patient Phone no:</label>
-          <input type="text" id="phone" name="phone" placeholder="Enter Patient Phone Number" required />
+          <input type="number" id="phone" name="phone" placeholder="Enter Patient Phone Number" required />
 
           <label htmlFor="addressDetails">Address Details:</label>
           <div className={appstyle['address-details']}>

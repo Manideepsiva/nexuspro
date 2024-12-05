@@ -4,7 +4,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
 const Hospitalavailableseetests = () => {
-    const [tests, setTests] = useState([]); // Change to an array of objects for test names and prices
+    const [tests, setTests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -17,9 +17,9 @@ const Hospitalavailableseetests = () => {
 
                 const response = await axios.get(`http://localhost:3001/api/hospitalseeavilable?hospitalId=${hospitalId}`);
                 
-                // Assuming the response is an object with test names as keys and prices as values
+             
                 const testData = Object.entries(response.data).map(([testName, price]) => ({ testName, price }));
-                setTests(testData); // Set the transformed array of test objects
+                setTests(testData); 
             } catch (error) {
                 setError(error.response?.data?.message || 'Failed to load available tests');
             } finally {
@@ -45,7 +45,7 @@ const Hospitalavailableseetests = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                height: '100px', // Adjust height as needed
+                                height: '100px', 
                                 overflow: 'hidden',
                             }}
                         >
@@ -56,7 +56,7 @@ const Hospitalavailableseetests = () => {
                                     whiteSpace: 'nowrap',
                                     textOverflow: 'ellipsis',
                                 }}
-                                title={testName} // Tooltip on hover
+                                title={testName} 
                             >
                                 <div
                                     style={{

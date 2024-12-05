@@ -118,29 +118,31 @@ const handleclick2 = async () =>{
         elements[i].addEventListener(eventType, callback);
       }
     };
-  
+
+ 
+
     /**
      * Mobile Navbar toggle logic
      */
     const navbar = document.querySelector("[data-navbar]");
     const navTogglers = document.querySelectorAll("[data-nav-toggler]");
     const overlay = document.querySelector("[data-overlay]");
-  
-    // Make sure this function is declared outside so it can be properly removed later
+    console.log(navbar,navTogglers,overlay)
+
     const toggleNav = () => {
       navbar?.classList.toggle(clientstyle["active"]);
       overlay?.classList.toggle(clientstyle["active"]);
       document.body.classList.toggle(clientstyle["nav-active"]);
     };
-  
+
     addEventOnElements(navTogglers, "click", toggleNav);
-  
+
     /**
      * Header and Back-to-Top Button behavior on scroll
      */
     const header = document.querySelector("[data-header]");
     const backTopBtn = document.querySelector("[data-back-top-btn]");
-  
+
     const activeElementOnScroll = () => {
       if (window.scrollY > 100) {
         header?.classList.add(clientstyle["active"]);
@@ -150,29 +152,34 @@ const handleclick2 = async () =>{
         backTopBtn?.classList.remove(clientstyle["active"]);
       }
     };
-  
+
     window.addEventListener("scroll", activeElementOnScroll);
-  
+
     /**
      * Reveal elements on scroll
      */
     const revealElements = document.querySelectorAll("[data-reveal]");
-  
+    
+
     const revealElementOnScroll = () => {
       for (let i = 0, len = revealElements.length; i < len; i++) {
+        console.log("mama this is not for as it its working ")
         if (revealElements[i].getBoundingClientRect().top < window.innerHeight / 1.15) {
           revealElements[i].classList.add(clientstyle["revealed"]);
+          console.log("hi bro")
         } else {
           revealElements[i].classList.remove(clientstyle["revealed"]);
+          console.log("hi bro sdfwi hdvwieubdvq wiehfviw dcwi")
         }
       }
     };
-  
+
     window.addEventListener("scroll", revealElementOnScroll);
     window.addEventListener("load", revealElementOnScroll);
-  
+
     // Cleanup function to remove all event listeners when component unmounts
     return () => {
+     
       window.removeEventListener("scroll", activeElementOnScroll);
       window.removeEventListener("scroll", revealElementOnScroll);
       window.removeEventListener("load", revealElementOnScroll);
@@ -181,7 +188,7 @@ const handleclick2 = async () =>{
       }
     };
   }, []);
-  
+
     return(
         <>
 
